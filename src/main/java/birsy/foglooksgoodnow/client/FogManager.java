@@ -9,6 +9,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CubicSampler;
 import net.minecraft.util.Mth;
@@ -70,20 +71,17 @@ public class FogManager {
         this.caveFogColors[2] =  new InterpolatedValue(1.0F);
 
         this.configMap = new HashMap<>();
-        if (FogLooksGoodNowConfig.config.isLoaded()) {
-            initializeConfig();
-        }
     }
 
     public void initializeConfig() {
         FogLooksGoodNowMod.LOGGER.info("Initialized Config Values");
-        this.fogStart.setDefaultValue(FogLooksGoodNowConfig.CLIENT_CONFIG.defaultFogStart.get());
-        this.fogEnd.setDefaultValue(FogLooksGoodNowConfig.CLIENT_CONFIG.defaultFogDensity.get());
-        this.useCaveFog = FogLooksGoodNowConfig.CLIENT_CONFIG.useCaveFog.get();
-        this.caveFogMultiplier = FogLooksGoodNowConfig.CLIENT_CONFIG.caveFogDensity.get();
+        this.fogStart.setDefaultValue(FogLooksGoodNowConfig.defaultFogStart.get());
+        this.fogEnd.setDefaultValue(FogLooksGoodNowConfig.defaultFogDensity.get());
+        this.useCaveFog = FogLooksGoodNowConfig.useCaveFog.get();
+        this.caveFogMultiplier = FogLooksGoodNowConfig.caveFogDensity.get();
         this.configMap = new HashMap<>();
 
-        Vec3 caveFogColor = Vec3.fromRGB24(FogLooksGoodNowConfig.CLIENT_CONFIG.caveFogColor.get());
+        Vec3 caveFogColor = Vec3.fromRGB24(FogLooksGoodNowConfig.caveFogColor.get());
         this.caveFogColors[0].setDefaultValue(caveFogColor.x);
         this.caveFogColors[1].setDefaultValue(caveFogColor.y);
         this.caveFogColors[2].setDefaultValue(caveFogColor.z);
@@ -97,7 +95,7 @@ public class FogManager {
     public void tick() {
         BlockPos pos = this.mc.gameRenderer.getMainCamera().getBlockPosition();
         Biome biome = this.mc.level.getBiome(pos).value();
-        ResourceLocation key = this.mc.level.registryAccess().registryOrThrow(Registry.BIOME_REGISTRY).getKey(biome);
+        ResourceLocation key = this.mc.level.registryAccess().registryOrThrow(Registries.BIOME).getKey(biome);
         if (key == null)
             return;
 

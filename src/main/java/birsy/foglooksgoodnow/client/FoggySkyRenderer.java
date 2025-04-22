@@ -1,16 +1,13 @@
 package birsy.foglooksgoodnow.client;
 
-import birsy.foglooksgoodnow.FogLooksGoodNowMod;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.util.CubicSampler;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Matrix4f;
 
 public class FoggySkyRenderer {
     public static void renderSky(ClientLevel level, float partialTick, PoseStack poseStack, Camera camera, Matrix4f projectionMatrix, boolean isFoggy, Runnable setupFog) {
@@ -29,7 +26,7 @@ public class FoggySkyRenderer {
 
             RenderSystem.depthMask(false);
             RenderSystem.setShader(GameRenderer::getPositionColorShader);
-            RenderSystem.disableTexture();
+            RenderSystem.resetTextureMatrix();
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
             Vec3 skyFogColor = densityManager.unlitFogColor;
